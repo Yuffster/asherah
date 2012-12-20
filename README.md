@@ -1,4 +1,6 @@
-Ashera, the Platform-Agnostic Narrative Language
+Asherah
 =======
+the Platform-Agnostic Narrative Language
+-------
 
 Documentation is coming eventually.
