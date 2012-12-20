@@ -79,7 +79,7 @@ def run_section(sequence, state):
       j = 1
       part = sequence[i]
 
-      if part['type'] == 'descriptive' or part['type'] == 'narration' or part['type'] == 'action' or part['type'] == 'comment':
+      if part['type'] in ['descriptive', 'narration', 'action', 'comment']:
          print part['content']
          print
 
@@ -94,7 +94,7 @@ def run_section(sequence, state):
          else:
             return ret
 
-      elif part['type'] == 'condition' or part['type'] == 'condition_call' or part['type'] == 'condition_default':
+      elif part['type'].startswith('condition'):
          ret = run_conditionals(sequence[i:], state)
          if type(ret) == int:
             j = ret
