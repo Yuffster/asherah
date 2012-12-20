@@ -1,4 +1,4 @@
-asherah
+Ashera, the Platform-Agnostic Narrative Language
 =======
 
-Web-based conversation tree engine.
+Documentation is coming eventually.
