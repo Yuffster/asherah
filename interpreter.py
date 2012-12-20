@@ -2,18 +2,33 @@
 
 import json
 import sys
+import random
 
 def run_conditionals(sequence, state):
-   for condition in sequence:
-      pass
-   return 1
-#   if len(conditionals) > 0:
-#      for c in conditionals:
-#         print "Should evaluate '%s' as a conditional"%(c['content'])
-#         if c['content'] in state and state[c['content']]:
-#            run_section(c['children'], state)
-#
-#   print
+   i = 0
+   ret = None
+   match = False
+   while i < len(sequence) and (
+         sequence[i]['type'] == 'condition_call' or 
+         sequence[i]['type'] == 'condition'):
+      if not match:
+         c = sequence[i]['content']
+         if sequence[i]['type'] == 'condition':
+            if c in state and state[c]:
+               match = True
+               ret = run_section(sequence[i]['children'], state)
+         else:
+            print "ERROR: Can't evaluate calls in conditionals yet"
+      i += 1
+
+   if i < len(sequence) and sequence[i]['type'] == 'condition_default':
+      if not match:
+         ret = run_section(sequence[i]['children'], state)
+      i += 1
+
+   if ret:
+      return ret
+   return i
 
 def run_choices(sequence, state):
    i = 0
@@ -37,10 +52,26 @@ def run_choices(sequence, state):
          print "Please enter a number between 1 and %d"%(len(choices))
          i = None
 
+   if 'children' in choices[i-1]:
       ret = run_section(choices[i-1]['children'], state)
       if ret:
          return ret
    return len(choices)
+
+def run_random(sequence, state):
+   i = 0
+   choices = []
+   while i < len(sequence) and sequence[i]['type'] == 'random_block':
+      choices.append(sequence[i]['children'])
+      i += 1
+
+   c = random.choice(choices)
+
+   ret = run_section(c, state)
+   if ret:
+      return ret
+   return len(choices)
+
 
 def run_section(sequence, state):
    i = 0
@@ -48,11 +79,22 @@ def run_section(sequence, state):
       j = 1
       part = sequence[i]
 
-      if part['type'] == 'descriptive':
+      if part['type'] == 'descriptive' or part['type'] == 'narration' or part['type'] == 'action' or part['type'] == 'comment':
          print part['content']
          print
 
-      elif part['type'] == 'conditional':
+      elif part['type'] == 'speech':
+         print "%s: %s"%(part['actor'], part['content'])
+         print
+
+      elif part['type'] == 'random_block':
+         ret = run_random(sequence[i:], state)
+         if type(ret) == int:
+            j = ret
+         else:
+            return ret
+
+      elif part['type'] == 'condition' or part['type'] == 'condition_call' or part['type'] == 'condition_default':
          ret = run_conditionals(sequence[i:], state)
          if type(ret) == int:
             j = ret
@@ -75,16 +117,29 @@ def run_section(sequence, state):
       elif part['type'] == 'link':
          return part['jump']
 
-      elif part['type'] == 'narration':
-         print part['content']
-         print
+      elif part['type'] == 'assignment':
+         var = None
+         value = None
 
-      elif part['type'] == 'action':
-         print part['content']
-         print
+         if 'variable' in part and 'value' in part:
+            var = part['variable']
+            value = part['value']
+         else:
+            parts = part['content'].split(' ')
+            var = parts[0]
+            if var.endswith(':'):
+               var = var[:-1]
+            value = parts[1]
+
+         try:
+            value = int(value)
+         except ValueError:
+            pass
+         state[var] = value
+
 
       else:
-         print "Unknown type %s"%(part['type'])
+         print "ERROR: Unknown type %s"%(part['type'])
       
       i += j
 
