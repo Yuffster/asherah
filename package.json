@@ -1,0 +1,13 @@
+{
+	"name" : "Asherah",
+	"description" : "A DSL for interactive narrative scripts which parses into JSON for easy digestion by game engines.",
+	"version" : "0.1",
+	"author" : "Michelle Steigerwalt <msteigerwalt@gmail.com>",
+	"repository" : {
+		"type" : "git",
+		"url" : "git://github.com/Yuffster/asherah.git"
+	},
+	"scripts": {
+		"main":"asherah.js"
+	}
+}

@@ -1,0 +1,147 @@
+You find yourself in an empty room.
+
+1.) Wait for something to happen.
+2.) Cry.
+3.) Leave the room.
+
+> 2
+
+You cry.
+Since you have magical crying powers, a rainbow forms before your eyes.
+
+You find yourself in an empty room.  A rainbow has formed in the center.
+
+1.) Wait for something to happen.
+2.) Cry.
+3.) Leave the room.
+
+> 1
+
+Nothing happens.
+
+You find yourself in an empty room.  A rainbow has formed in the center.
+
+1.) Wait for something to happen.
+2.) Cry.
+3.) Leave the room.
+
+> 3
+
+You step outside.
+Jack is standing outside.
+Jack asks, "Were you crying?"
+
+1.) No!
+2.) It's just all this cat dander...
+3.) Maybe.
+
+> 2
+
+There are a bunch of paperclips on the ground.
+
+1.) Take paperclip.
+2.) Ignore paperclips.
+
+> 1
+
+You take one of the paperclips.
+
+There are a bunch of paperclips on the ground.
+
+1.) Take another paperclip.
+2.) Eat paperclip.
+3.) Leave.
+
+> 2
+
+Mmm.  Metally.
+There are a bunch of paperclips on the ground.
+
+1.) Take paperclip.
+2.) Leave.
+
+> 1
+
+You take one of the paperclips.
+
+There are a bunch of paperclips on the ground.
+
+1.) Take another paperclip.
+2.) Eat paperclip.
+3.) Talk to Jack.
+4.) Leave.
+
+> 1
+
+You take another paperclip.
+You now have 2 paperclips.
+
+There are a bunch of paperclips on the ground.
+
+1.) Take another paperclip.
+2.) Eat paperclip.
+3.) Talk to Jack.
+4.) Leave.
+
+> 4
+
+The game is now over. 
+Your final score is 2.
+Play again?
+
+1.) Yes
+2.) No
+
+> 1
+
+You find yourself in an empty room.
+
+1.) Wait for something to happen.
+2.) Cry.
+3.) Leave the room.
+
+> 3
+
+You step outside.
+Jack is standing outside.
+Jack says, "Whoah, you're awesome!"
+There are a bunch of paperclips on the ground.
+
+1.) Take paperclip.
+2.) Ignore paperclips.
+3.) Talk to Jack.
+
+> 3
+
+Jack asks, "What's up?"
+
+There are a bunch of paperclips on the ground.
+
+1.) Take paperclip.
+2.) Ignore paperclips.
+3.) Talk to Jack.
+
+There are a bunch of paperclips on the ground.
+
+1.) Take paperclip.
+2.) Ignore paperclips.
+3.) Talk to Jack.
+
+> 3
+
+Jack says, "Uh, hi."
+
+There are a bunch of paperclips on the ground.
+
+1.) Take paperclip.
+2.) Ignore paperclips.
+3.) Talk to Jack.
+
+> 2
+
+The game is now over. 
+Your final score is 0.
+Play again?
+
+1.) Yes
+2.) No
