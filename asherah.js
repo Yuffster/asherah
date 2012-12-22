@@ -45,8 +45,8 @@ function Asherah() {
 		'narration'   : '::',
 		'speech'      : /(\w+):/,
 		'flag'        : '~',
-		'condition_fallback' : '|[^|]',
 		'condition_default'  : '||',
+		'condition_fallback' : '|',
 		'descriptive_list_item': ',"',
 		'descriptive_statement': '."'
 	},
@@ -77,7 +77,7 @@ function Asherah() {
 		condition: [
 			'condition',
 			'condition_fallback',
-			'condition_catch',
+			'condition_default',
 		],
 		descriptive: [
 			'descriptive',
@@ -116,10 +116,6 @@ function Asherah() {
 				actor: s.symbol.match(/^(\w+):/)[1],
 				content: s.content
 			}
-		}, link: function(s) {
-			return {
-				jump: s.content
-			}
 		}, assignment: function(s) {
 			var m = s.content.split(':');
 			if (m.length>1) {
@@ -137,10 +133,14 @@ function Asherah() {
 			if (words.length>1) {
 				l = parse_line('!'+s.content).format();
 			}
-			if (s.content=='otherwise') {
-				l.type = 'condition_default';
-				if (l.content.length) {
-					throw "Conditional fallback (||) can't have condition.  Use | instead."
+			if (s.content.match(/^otherwise\b/)) {
+				s.type = 'condition_default';
+				s.content = s.content.replace(/^otherwise\b/, '');
+			} 
+			if (s.type=='condition_default'&&s.content) {
+				if (s.content.length) {
+					bork("Conditional default can't have condition; "
+						+"use | or ? instead", s);
 				}
 			}
 			return l;
@@ -309,7 +309,7 @@ function Asherah() {
 				seqs[s.content] = [];
 				seq = seqs[s.content];
 			}
-			
+
 			var l = s.format();
 			if (!l) return;
 
