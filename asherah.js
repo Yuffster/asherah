@@ -272,7 +272,7 @@ function Asherah() {
 				//If the statement doesn't match any syntax we know of, it's
 				//probably a continuation of a preceding multiline statement.
 				if (!statement) {
-					if (last&&last.is_a('multiline')>-1) {
+					if (last&&last.is_a('multiline')) {
 						last.content += BREAK+l.trim();
 					} else throw "invalid statement";
 				} else {
