@@ -70,7 +70,7 @@ function Asherah() {
 		callable: [
 			'condition', 
 			'condition_fallback',
-			'random'
+			'assignment'
 		],
 		/* We have to account for each comparison operation type and
 		   linked conditions. */
@@ -129,13 +129,14 @@ function Asherah() {
 				variable: s.content
 			}
 		}, condition: function(s) {
-			var l = {}, words = s.content.split(/\s/);
-			if (words.length>1) {
-				l = parse_line('!'+s.content).format();
-			}
+			var l = {};
 			if (s.content.match(/^otherwise\b/)) {
 				s.type = 'condition_default';
 				s.content = s.content.replace(/^otherwise\b/, '');
+			} 
+			if (s.content.match(/^unless\b/)) {
+				s.type = 'condition_negative';
+				s.content = s.content.replace(/^unless\b/, '');
 			} 
 			if (s.type=='condition_default'&&s.content) {
 				if (s.content.length) {
@@ -143,13 +144,25 @@ function Asherah() {
 						+"use | or ? instead", s);
 				}
 			}
+			if (s.content.split(/\s/)) {
+				l = parse_line('!'+s.content).format();
+			}
 			return l;
 		}, flag: function(s) {
 			return {
-				name: s.content
+				variable: s.content,
+				value: s.true
 			}
 		}, call: function(s) {
-			if (s.children) return { type:'condition_call' }
+			var l = {}, words = s.content.trim().split(/\s/);
+			if (s.children) l.type = "condition_call";
+			l.call = words.shift();
+			l.arguments = words;
+			return l;
+		}, callable: function(s) {
+			var call, m = s.content.split('!');
+			if (m.length>1) return parse_line('!'+m[1], s.line).format();
+			return {};
 		}
 	//A variable for holding a copy of the original types with escaped regexen.
 	//This allows us to use the original patterns for argument expansion.
