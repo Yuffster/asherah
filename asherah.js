@@ -298,21 +298,44 @@ function Asherah() {
 			}
 		});
 
-		var output = {main:[]}, seq = output.main;
+		var seqs = {main:[]}, seq = seqs.main, vars = [], calls = [];
 
 		blocks.forEach(function(s) {
+
 			if (s.is_a('sequence')) {
-				if (output[s.content]&&output[s.content].length) {
+				if (seqs[s.content]&&seqs[s.content].length) {
 					bork("Sequence can't be duplicated", s);
 				}
-				output[s.content] = [];
-				seq = output[s.content];
+				seqs[s.content] = [];
+				seq = seqs[s.content];
 			}
+			
 			var l = s.format();
-			if (l) seq.push(l);
+			if (!l) return;
+
+			l.line = s.line;
+
+			seq.push(l);
+
+			(function walk(c) {
+				c.forEach(function(l) {
+					if (l.variable&&vars.indexOf(l.variable)==-1) {
+						vars.push(l.variable);
+					}
+					if (l.call&&calls.indexOf(l.call)==-1) {
+						calls.push(l.call)
+					}
+					if (l.children) walk(l.children);
+				});
+			})([l]);
+
 		});
 
-		return output;
+		return {
+			sequences: seqs,
+			calls: calls,
+			variables: vars
+		};
 
 	}
 
