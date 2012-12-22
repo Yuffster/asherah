@@ -313,8 +313,6 @@ function Asherah() {
 			var l = s.format();
 			if (!l) return;
 
-			l.line = s.line;
-
 			seq.push(l);
 
 			(function walk(c) {
