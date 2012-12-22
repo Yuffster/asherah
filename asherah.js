@@ -139,7 +139,9 @@ function Asherah() {
 			}
 			if (s.content=='otherwise') {
 				l.type = 'condition_default';
-				l.content = '';
+				if (l.content.length) {
+					throw "Conditional fallback (||) can't have condition.  Use | instead."
+				}
 			}
 			return l;
 		}, flag: function(s) {
@@ -152,6 +154,14 @@ function Asherah() {
 	//A variable for holding a copy of the original types with escaped regexen.
 	//This allows us to use the original patterns for argument expansion.
 	}, esc_types = [];
+
+	function bork(mess, n, line) {
+		if (!line) {
+			line = n.full;
+			n    = n.line;
+		}
+		throw "Syntax error, line "+n+" ("+mess+"): "+line.trim();
+	}
 
 	/* Basically a self-important map() operation.  We go through the symbol
 	   table and incorporate our symbols into a regular expression that checks
@@ -186,7 +196,8 @@ function Asherah() {
 			prevSib   : null,
 			nextSib   : null,
 			rdepth    : 0,
-			line      : line
+			line      : line,
+			full      : match[0]
 		};
 
 		self.is_a = function(type) {
@@ -254,7 +265,7 @@ function Asherah() {
 	function parse_line(l,last,n) {
 		for (var t in esc_types) {
 			match = new RegExp('^(\\s*)?'+'('+esc_types[t]+')(.*)').exec(l);
-			if (match) return new Statement(t, match, last, n);
+			if (match) return new Statement(t, match, last, n+1);
 		}
 	};
 
@@ -282,7 +293,7 @@ function Asherah() {
 				}
 			} catch(e) {
 				if (typeof e == 'string') {
-					throw "Syntax error, line "+n+" ("+e+"): "+l.trim();
+					bork (e, n, l);
 				} throw e;
 			}
 		});
@@ -292,7 +303,7 @@ function Asherah() {
 		blocks.forEach(function(s) {
 			if (s.is_a('sequence')) {
 				if (output[s.content]&&output[s.content].length) {
-					throw "Sequence can't be duplicated: "+s.content;
+					bork("Sequence can't be duplicated", s);
 				}
 				output[s.content] = [];
 				seq = output[s.content];
