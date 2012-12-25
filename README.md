@@ -30,7 +30,7 @@ Example:
 
     :: You walk into a bar
 
-Will produce output like:
+Will add the following to the narration track:
 
     You walk into a bar
 
@@ -41,7 +41,7 @@ Example:
 
     " The bar is dark and full of unsavory types
 
-Will produce output like:
+Will add the following to the description track:
 
     The bar is dark and full of unsavory types
 
@@ -52,7 +52,7 @@ Example:
 
     @ You order a glass of scotch
 
-Will produce output like:
+Will add the following to describe the user's actions:
 
     You order a glass of scotch
 
@@ -63,9 +63,9 @@ Example:
 
     :: Scotch: Aye, yah can't order me around lak that!
 
-Will produce output like:
+Will add speech by `Scotch` like:
 
-    Scotch: Aye, yah can't order me around lak that!
+    Aye, yah can't order me around lak that!
 
 
 Links
