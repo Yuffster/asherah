@@ -1,368 +1,404 @@
 {
-    "main": [
-        {
-            "type": "sequence",
-            "content": "main"
-        },
-        {
-            "type": "descriptive",
-            "content": "You find yourself in an empty room."
-        },
-        {
-            "type": "condition",
-            "content": "rainbows",
-            "children": [
-                {
-                    "type": "descriptive",
-                    "content": "A rainbow has formed in the center."
-                }
-            ]
-        },
-        {
-            "type": "choice",
-            "content": "Wait for something to happen.",
-            "children": [
-                {
-                    "type": "narration",
-                    "content": "Nothing happens."
-                },
-                {
-                    "type": "link",
-                    "content": "main",
-                    "jump": "main"
-                }
-            ]
-        },
-        {
-            "type": "choice",
-            "content": "Cry.",
-            "children": [
-                {
-                    "type": "narration",
-                    "content": "You start to cry."
-                },
-                {
-                    "type": "assignment",
-                    "content": "crying: true",
-                    "variable": "crying",
-                    "value": "true"
-                },
-                {
-                    "type": "condition_call",
-                    "content": "use_magic crying",
-                    "children": [
-                        {
-                            "type": "narration",
-                            "content": "Since you have magical crying powers, a rainbow forms before your\neyes."
-                        },
-                        {
-                            "type": "assignment",
-                            "content": "rainbows: true",
-                            "variable": "rainbows",
-                            "value": "true"
-                        },
-                        {
-                            "type": "condition_call",
-                            "content": "with_ally",
-                            "children": [
-                                {
-                                    "type": "flag",
-                                    "content": "revealed_rainbow_powers",
-                                    "name": "revealed_rainbow_powers"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "type": "condition_default",
-                    "content": "",
-                    "children": [
-                        {
-                            "type": "narration",
-                            "content": "Nothing happens."
-                        }
-                    ]
-                },
-                {
-                    "type": "link",
-                    "content": "main",
-                    "jump": "main"
-                }
-            ]
-        },
-        {
-            "type": "choice",
-            "content": "Leave the room.",
-            "children": [
-                {
-                    "type": "narration",
-                    "content": "You step outside."
-                },
-                {
-                    "type": "action",
-                    "content": "Jack is standing outside."
-                },
-                {
-                    "type": "condition",
-                    "content": "crying",
-                    "children": [
-                        {
-                            "type": "comment",
-                            "content": "Jack (supicious): Were you crying?"
-                        },
-                        {
-                            "type": "choice",
-                            "content": "No!"
-                        },
-                        {
-                            "type": "choice",
-                            "content": "It's just all this cat dander..."
-                        },
-                        {
-                            "type": "choice",
-                            "content": "Maybe."
-                        }
-                    ]
-                },
-                {
-                    "type": "condition_call",
-                    "content": "not crying",
-                    "children": [
-                        {
-                            "type": "speech",
-                            "content": "Whoah, you're awesome!",
-                            "actor": "Jack"
-                        }
-                    ]
-                },
-                {
-                    "type": "assignment",
-                    "content": "paperclips: 0",
-                    "variable": "paperclips",
-                    "value": "0"
-                }
-            ]
-        }
+    "sequences": {
+        "main": [
+            {
+                "type": "sequence",
+                "content": "main"
+            },
+            {
+                "type": "descriptive",
+                "content": "You find yourself in an empty room."
+            },
+            {
+                "type": "condition_call",
+                "content": "rainbows",
+                "call": "rainbows",
+                "arguments": [],
+                "children": [
+                    {
+                        "type": "descriptive",
+                        "content": "A rainbow has formed in the center."
+                    }
+                ]
+            },
+            {
+                "type": "choice",
+                "content": "Wait for something to happen.",
+                "children": [
+                    {
+                        "type": "narration",
+                        "content": "Nothing happens."
+                    },
+                    {
+                        "type": "link",
+                        "content": "main"
+                    }
+                ]
+            },
+            {
+                "type": "choice",
+                "content": "Cry.",
+                "children": [
+                    {
+                        "type": "narration",
+                        "content": "You start to cry."
+                    },
+                    {
+                        "type": "assignment",
+                        "content": "crying: true",
+                        "variable": "crying",
+                        "value": "true"
+                    },
+                    {
+                        "type": "condition_call",
+                        "content": "use_magic crying",
+                        "call": "use_magic",
+                        "arguments": [
+                            "crying"
+                        ],
+                        "children": [
+                            {
+                                "type": "narration",
+                                "content": "Since you have magical crying powers, a rainbow forms before your\neyes."
+                            },
+                            {
+                                "type": "assignment",
+                                "content": "rainbows: true",
+                                "variable": "rainbows",
+                                "value": "true"
+                            },
+                            {
+                                "type": "condition_call",
+                                "content": "with_ally",
+                                "call": "with_ally",
+                                "arguments": [],
+                                "children": [
+                                    {
+                                        "type": "flag",
+                                        "content": "revealed_rainbow_powers",
+                                        "variable": "revealed_rainbow_powers"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "condition_call",
+                        "content": "",
+                        "call": "",
+                        "arguments": [],
+                        "children": [
+                            {
+                                "type": "narration",
+                                "content": "Nothing happens."
+                            }
+                        ]
+                    },
+                    {
+                        "type": "link",
+                        "content": "main"
+                    }
+                ]
+            },
+            {
+                "type": "choice",
+                "content": "Leave the room.",
+                "children": [
+                    {
+                        "type": "narration",
+                        "content": "You step outside."
+                    },
+                    {
+                        "type": "action",
+                        "content": "Jack is standing outside."
+                    },
+                    {
+                        "type": "condition_call",
+                        "content": "crying",
+                        "call": "crying",
+                        "arguments": [],
+                        "children": [
+                            {
+                                "type": "comment",
+                                "content": "Jack (supicious): Were you crying?"
+                            },
+                            {
+                                "type": "choice",
+                                "content": "No!"
+                            },
+                            {
+                                "type": "choice",
+                                "content": "It's just all this cat dander..."
+                            },
+                            {
+                                "type": "choice",
+                                "content": "Maybe."
+                            }
+                        ]
+                    },
+                    {
+                        "type": "condition_call",
+                        "content": "not crying",
+                        "call": "not",
+                        "arguments": [
+                            "crying"
+                        ],
+                        "children": [
+                            {
+                                "type": "speech",
+                                "content": "Whoah, you're awesome!",
+                                "actor": "Jack"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "assignment",
+                        "content": "paperclips: 0",
+                        "variable": "paperclips",
+                        "value": "0"
+                    }
+                ]
+            }
+        ],
+        "takeclips": [
+            {
+                "type": "sequence",
+                "content": "takeclips",
+                "children": [
+                    {
+                        "type": "narration",
+                        "content": "There are a bunch of paperclips on the ground."
+                    },
+                    {
+                        "type": "condition_call",
+                        "content": "no paperclips",
+                        "call": "no",
+                        "arguments": [
+                            "paperclips"
+                        ],
+                        "children": [
+                            {
+                                "type": "choice",
+                                "content": "Take paperclip",
+                                "children": [
+                                    {
+                                        "type": "narration",
+                                        "content": "You take one of the paperclips."
+                                    },
+                                    {
+                                        "type": "increment",
+                                        "content": "paperclips",
+                                        "variable": "paperclips"
+                                    },
+                                    {
+                                        "type": "link",
+                                        "content": "takeclips"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "condition_call",
+                        "content": "paperclips",
+                        "call": "paperclips",
+                        "arguments": [],
+                        "children": [
+                            {
+                                "type": "choice",
+                                "content": "Eat paperclip",
+                                "children": [
+                                    {
+                                        "type": "narration",
+                                        "content": "Mmm. Metaly."
+                                    },
+                                    {
+                                        "type": "decrement",
+                                        "content": "paperclips",
+                                        "variable": "paperclips"
+                                    },
+                                    {
+                                        "type": "link",
+                                        "content": "takeclips"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "choice",
+                                "content": "Take another paperclip",
+                                "children": [
+                                    {
+                                        "type": "narration",
+                                        "content": "You take another paperclip."
+                                    },
+                                    {
+                                        "type": "increment",
+                                        "content": "paperclips",
+                                        "variable": "paperclips"
+                                    },
+                                    {
+                                        "type": "assignment",
+                                        "content": "pcs: expand_int <paperclips> paperclip",
+                                        "variable": "pcs",
+                                        "value": "expand_int <paperclips> paperclip"
+                                    },
+                                    {
+                                        "type": "narration",
+                                        "content": "You now have <pcs> paperclips."
+                                    },
+                                    {
+                                        "type": "link",
+                                        "content": "takeclips"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "choice",
+                        "content": "Talk to Jack",
+                        "children": [
+                            {
+                                "type": "random_block",
+                                "content": "Jack: Oh, hello.",
+                                "children": [
+                                    {
+                                        "type": "speech",
+                                        "content": "Oh, hello.",
+                                        "actor": "Jack"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "random_block",
+                                "content": "Jack: What's up?",
+                                "children": [
+                                    {
+                                        "type": "speech",
+                                        "content": "What's up?",
+                                        "actor": "Jack"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "random_block",
+                                "content": "Jack: Huh?",
+                                "children": [
+                                    {
+                                        "type": "speech",
+                                        "content": "Huh?",
+                                        "actor": "Jack"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "random_block",
+                                "content": "Jack: Uh, hi.",
+                                "children": [
+                                    {
+                                        "type": "speech",
+                                        "content": "Uh, hi.",
+                                        "actor": "Jack"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "random_block",
+                                "content": "Jack: What do you want?",
+                                "children": [
+                                    {
+                                        "type": "speech",
+                                        "content": "What do you want?",
+                                        "actor": "Jack"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "random_block",
+                                "content": "Jack: I say a random thing every time!",
+                                "children": [
+                                    {
+                                        "type": "speech",
+                                        "content": "I say a random thing every time!",
+                                        "actor": "Jack"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "random_block",
+                                "content": "",
+                                "children": [
+                                    {
+                                        "type": "speech",
+                                        "content": "And sometimes I can say multiple things.",
+                                        "actor": "Jack"
+                                    },
+                                    {
+                                        "type": "speech",
+                                        "content": "Or whatever, since this is a whole block.",
+                                        "actor": "Jack"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "random_block",
+                                "content": "Jack: Huzzah.",
+                                "children": [
+                                    {
+                                        "type": "speech",
+                                        "content": "Huzzah.",
+                                        "actor": "Jack"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "choice",
+                        "content": "Leave."
+                    }
+                ]
+            },
+            {
+                "type": "narration",
+                "content": "The game is now over.\nYour final score is <paperclips,0>.\nPlay again?"
+            },
+            {
+                "type": "choice",
+                "content": "Yes",
+                "children": [
+                    {
+                        "type": "assignment",
+                        "content": "paperclips: 0",
+                        "variable": "paperclips",
+                        "value": "0"
+                    },
+                    {
+                        "type": "link",
+                        "content": "main"
+                    }
+                ]
+            },
+            {
+                "type": "choice",
+                "content": "No\n"
+            }
+        ]
+    },
+    "calls": [
+        "rainbows",
+        "use_magic",
+        "with_ally",
+        "crying",
+        "not",
+        "no",
+        "paperclips"
     ],
-    "takeclips": [
-        {
-            "type": "sequence",
-            "content": "takeclips",
-            "children": [
-                {
-                    "type": "narration",
-                    "content": "There are a bunch of paperclips on the ground."
-                },
-                {
-                    "type": "condition_call",
-                    "content": "no paperclips",
-                    "children": [
-                        {
-                            "type": "choice",
-                            "content": "Take paperclip",
-                            "children": [
-                                {
-                                    "type": "narration",
-                                    "content": "You take one of the paperclips."
-                                },
-                                {
-                                    "type": "increment",
-                                    "content": "paperclips",
-                                    "variable": "paperclips"
-                                },
-                                {
-                                    "type": "link",
-                                    "content": "takeclips",
-                                    "jump": "takeclips"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "type": "condition",
-                    "content": "paperclips",
-                    "children": [
-                        {
-                            "type": "choice",
-                            "content": "Eat paperclip",
-                            "children": [
-                                {
-                                    "type": "narration",
-                                    "content": "Mmm. Metaly."
-                                },
-                                {
-                                    "type": "decrement",
-                                    "content": "paperclips",
-                                    "variable": "paperclips"
-                                },
-                                {
-                                    "type": "link",
-                                    "content": "takeclips",
-                                    "jump": "takeclips"
-                                }
-                            ]
-                        },
-                        {
-                            "type": "choice",
-                            "content": "Take another paperclip",
-                            "children": [
-                                {
-                                    "type": "narration",
-                                    "content": "You take another paperclip."
-                                },
-                                {
-                                    "type": "increment",
-                                    "content": "paperclips",
-                                    "variable": "paperclips"
-                                },
-                                {
-                                    "type": "assignment",
-                                    "content": "pcs: expand_int <paperclips> paperclip",
-                                    "variable": "pcs",
-                                    "value": "expand_int <paperclips> paperclip"
-                                },
-                                {
-                                    "type": "narration",
-                                    "content": "You now have <pcs> paperclips."
-                                },
-                                {
-                                    "type": "link",
-                                    "content": "takeclips",
-                                    "jump": "takeclips"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "type": "choice",
-                    "content": "Talk to Jack",
-                    "children": [
-                        {
-                            "type": "random_block",
-                            "content": "Jack: Oh, hello.",
-                            "children": [
-                                {
-                                    "type": "speech",
-                                    "content": "Oh, hello.",
-                                    "actor": "Jack"
-                                }
-                            ]
-                        },
-                        {
-                            "type": "random_block",
-                            "content": "Jack: What's up?",
-                            "children": [
-                                {
-                                    "type": "speech",
-                                    "content": "What's up?",
-                                    "actor": "Jack"
-                                }
-                            ]
-                        },
-                        {
-                            "type": "random_block",
-                            "content": "Jack: Huh?",
-                            "children": [
-                                {
-                                    "type": "speech",
-                                    "content": "Huh?",
-                                    "actor": "Jack"
-                                }
-                            ]
-                        },
-                        {
-                            "type": "random_block",
-                            "content": "Jack: Uh, hi.",
-                            "children": [
-                                {
-                                    "type": "speech",
-                                    "content": "Uh, hi.",
-                                    "actor": "Jack"
-                                }
-                            ]
-                        },
-                        {
-                            "type": "random_block",
-                            "content": "Jack: What do you want?",
-                            "children": [
-                                {
-                                    "type": "speech",
-                                    "content": "What do you want?",
-                                    "actor": "Jack"
-                                }
-                            ]
-                        },
-                        {
-                            "type": "random_block",
-                            "content": "Jack: I say a random thing every time!",
-                            "children": [
-                                {
-                                    "type": "speech",
-                                    "content": "I say a random thing every time!",
-                                    "actor": "Jack"
-                                }
-                            ]
-                        },
-                        {
-                            "type": "random_block",
-                            "content": "",
-                            "children": [
-                                {
-                                    "type": "speech",
-                                    "content": "And sometimes I can say multiple things.",
-                                    "actor": "Jack"
-                                },
-                                {
-                                    "type": "speech",
-                                    "content": "Or whatever, since this is a whole block.",
-                                    "actor": "Jack"
-                                }
-                            ]
-                        },
-                        {
-                            "type": "random_block",
-                            "content": "Jack: Huzzah.",
-                            "children": [
-                                {
-                                    "type": "speech",
-                                    "content": "Huzzah.",
-                                    "actor": "Jack"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "type": "choice",
-                    "content": "Leave."
-                }
-            ]
-        },
-        {
-            "type": "narration",
-            "content": "The game is now over.\nYour final score is <paperclips,0>.\nPlay again?"
-        },
-        {
-            "type": "choice",
-            "content": "Yes",
-            "children": [
-                {
-                    "type": "assignment",
-                    "content": "paperclips 0"
-                },
-                {
-                    "type": "link",
-                    "content": "main",
-                    "jump": "main"
-                }
-            ]
-        },
-        {
-            "type": "choice",
-            "content": "No"
-        }
+    "variables": [
+        "crying",
+        "rainbows",
+        "revealed_rainbow_powers",
+        "paperclips",
+        "pcs"
     ]
 }

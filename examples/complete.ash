@@ -62,6 +62,6 @@
 Your final score is <paperclips,0>.
 Play again?
 * Yes
-	= paperclips 0
+	= paperclips: 0
 	# main
 * No
