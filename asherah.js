@@ -45,8 +45,8 @@ function Asherah() {
 		'narration'   : '::',
 		'speech'      : /(\w+):/,
 		'flag'        : '~',
-		'condition_fallback' : '|[^|]',
 		'condition_default'  : '||',
+		'condition_fallback' : '|',
 		'descriptive_list_item': ',"',
 		'descriptive_statement': '."'
 	},
@@ -70,14 +70,14 @@ function Asherah() {
 		callable: [
 			'condition', 
 			'condition_fallback',
-			'random'
+			'assignment'
 		],
 		/* We have to account for each comparison operation type and
 		   linked conditions. */
 		condition: [
 			'condition',
 			'condition_fallback',
-			'condition_catch',
+			'condition_default',
 		],
 		descriptive: [
 			'descriptive',
@@ -116,10 +116,6 @@ function Asherah() {
 				actor: s.symbol.match(/^(\w+):/)[1],
 				content: s.content
 			}
-		}, link: function(s) {
-			return {
-				jump: s.content
-			}
 		}, assignment: function(s) {
 			var m = s.content.split(':');
 			if (m.length>1) {
@@ -133,25 +129,52 @@ function Asherah() {
 				variable: s.content
 			}
 		}, condition: function(s) {
-			var l = {}, words = s.content.split(/\s/);
-			if (words.length>1) {
-				l = parse_line('!'+s.content).format();
+			var l = {};
+			if (s.content.match(/^otherwise\b/)) {
+				s.type = 'condition_default';
+				s.content = s.content.replace(/^otherwise\b/, '');
+			} 
+			if (s.content.match(/^unless\b/)) {
+				s.type = 'condition_negative';
+				s.content = s.content.replace(/^unless\b/, '');
+			} 
+			if (s.type=='condition_default'&&s.content) {
+				if (s.content.length) {
+					bork("Conditional default can't have condition; "
+						+"use | or ? instead", s);
+				}
 			}
-			if (s.content=='otherwise') {
-				l.type = 'condition_default';
-				l.content = '';
+			if (s.content.split(/\s/)) {
+				l = parse_line('!'+s.content).format();
 			}
 			return l;
 		}, flag: function(s) {
 			return {
-				name: s.content
+				variable: s.content,
+				value: s.true
 			}
 		}, call: function(s) {
-			if (s.children) return { type:'condition_call' }
+			var l = {}, words = s.content.trim().split(/\s/);
+			if (s.children) l.type = "condition_call";
+			l.call = words.shift();
+			l.arguments = words;
+			return l;
+		}, callable: function(s) {
+			var call, m = s.content.split('!');
+			if (m.length>1) return parse_line('!'+m[1], s.line).format();
+			return {};
 		}
 	//A variable for holding a copy of the original types with escaped regexen.
 	//This allows us to use the original patterns for argument expansion.
 	}, esc_types = [];
+
+	function bork(mess, n, line) {
+		if (!line) {
+			line = n.full;
+			n    = n.line;
+		}
+		throw "Syntax error, line "+n+" ("+mess+"): "+line.trim();
+	}
 
 	/* Basically a self-important map() operation.  We go through the symbol
 	   table and incorporate our symbols into a regular expression that checks
@@ -186,7 +209,8 @@ function Asherah() {
 			prevSib   : null,
 			nextSib   : null,
 			rdepth    : 0,
-			line      : line
+			line      : line,
+			full      : match[0]
 		};
 
 		self.is_a = function(type) {
@@ -254,7 +278,7 @@ function Asherah() {
 	function parse_line(l,last,n) {
 		for (var t in esc_types) {
 			match = new RegExp('^(\\s*)?'+'('+esc_types[t]+')(.*)').exec(l);
-			if (match) return new Statement(t, match, last, n);
+			if (match) return new Statement(t, match, last, n+1);
 		}
 	};
 
@@ -272,7 +296,7 @@ function Asherah() {
 				//If the statement doesn't match any syntax we know of, it's
 				//probably a continuation of a preceding multiline statement.
 				if (!statement) {
-					if (last&&last.is_a('multiline')>-1) {
+					if (last&&last.is_a('multiline')) {
 						last.content += BREAK+l.trim();
 					} else throw "invalid statement";
 				} else {
@@ -282,26 +306,47 @@ function Asherah() {
 				}
 			} catch(e) {
 				if (typeof e == 'string') {
-					throw "Syntax error, line "+n+" ("+e+"): "+l.trim();
+					bork (e, n, l);
 				} throw e;
 			}
 		});
 
-		var output = {main:[]}, seq = output.main;
+		var seqs = {main:[]}, seq = seqs.main, vars = [], calls = [];
 
 		blocks.forEach(function(s) {
+
 			if (s.is_a('sequence')) {
-				if (output[s.content]&&output[s.content].length) {
-					throw "Sequence can't be duplicated: "+s.content;
+				if (seqs[s.content]&&seqs[s.content].length) {
+					bork("Sequence can't be duplicated", s);
 				}
-				output[s.content] = [];
-				seq = output[s.content];
+				seqs[s.content] = [];
+				seq = seqs[s.content];
 			}
+
 			var l = s.format();
-			if (l) seq.push(l);
+			if (!l) return;
+
+			seq.push(l);
+
+			(function walk(c) {
+				c.forEach(function(l) {
+					if (l.variable&&vars.indexOf(l.variable)==-1) {
+						vars.push(l.variable);
+					}
+					if (l.call&&calls.indexOf(l.call)==-1) {
+						calls.push(l.call)
+					}
+					if (l.children) walk(l.children);
+				});
+			})([l]);
+
 		});
 
-		return output;
+		return {
+			sequences: seqs,
+			calls: calls,
+			variables: vars
+		};
 
 	}
 
