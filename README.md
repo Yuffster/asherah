@@ -2,9 +2,10 @@
 
 ---
 
-Asherah is a Markdown-inspired text format for branching narratives (ie, 
-conversations) optimized for human readability and use by nontechnical
-stakeholders (voice actors, writers, product managers, etc).
+Asherah is a Markdown-inspired text format for branching narratives (choose-
+your-own-adventure style games, conversations) optimized for human readability
+and use by nontechnical stakeholders (voice actors, writers, product managers,
+etc).
 
 The language is whitespace-sensitive (tabs only).
 
